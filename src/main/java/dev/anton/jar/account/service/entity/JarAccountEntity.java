@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "JAR_ACCOUNT",
-        uniqueConstraints = { @UniqueConstraint(columnNames = { "CUSTOMER_ID", "LINKED_ACCOUNT",  "CURRENCY"  }) })
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"CUSTOMER_ID", "LINKED_ACCOUNT", "CURRENCY"})})
 public class JarAccountEntity {
 
     @Id

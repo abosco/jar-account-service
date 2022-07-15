@@ -13,8 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-    protected ResponseEntity<Error> handleBadRequestException(
-            BadRequestException ex) {
+    protected ResponseEntity<Error> handleBadRequestException(BadRequestException ex) {
         return ResponseEntity.badRequest().body(ex.getError());
     }
 }

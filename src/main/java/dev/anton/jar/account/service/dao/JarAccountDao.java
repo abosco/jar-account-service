@@ -14,4 +14,5 @@ public interface JarAccountDao extends CrudRepository<JarAccountEntity, String> 
     List<JarAccountEntity> findByLinkedAccountIban(String linkedAccountIban);
 
     List<JarAccountEntity> findByCustomerIdAndLinkedAccountIban(String customerId, String linkedAccount);
+
 }

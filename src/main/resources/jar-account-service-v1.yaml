@@ -36,17 +36,17 @@ paths:
       summary: retrives all jar accounts linked to a customerId or account
       operationId: getJarAccounts
       parameters:
-      - in: query
-        name: customerId
-        description: customerId of the customer
-        required: false
-        schema:
+        - in: query
+          name: customerId
+          description: customerId of the customer
+          required: false
+          schema:
             type: string
-      - in: query
-        name: linkedAccount
-        description: accountId of the account
-        required: false
-        schema:
+        - in: query
+          name: linkedAccount
+          description: accountId of the account
+          required: false
+          schema:
             type: string
       responses:
         200:
