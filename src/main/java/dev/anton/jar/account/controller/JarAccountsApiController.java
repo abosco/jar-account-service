@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class JarAccountsApiController implements JarAccountsApi {
 
@@ -19,4 +21,8 @@ public class JarAccountsApiController implements JarAccountsApi {
         return ResponseEntity.ok().body(jarAccountService.createJarAccount(newJarAccount));
     }
 
+    @Override
+    public ResponseEntity<List<JarAccount>> getJarAccounts(String customerId, String linkedAccount) {
+        return ResponseEntity.ok().body(jarAccountService.getJarAccounts(customerId, linkedAccount));
+    }
 }

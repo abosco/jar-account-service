@@ -3,16 +3,19 @@ package dev.anton.jar.account.service;
 import dev.anton.jar.account.exception.BadRequestException;
 import dev.anton.jar.account.service.dao.JarAccountDao;
 import dev.anton.jar.account.service.entity.JarAccountEntity;
+import dev.anton.jar.account.service.mapper.JarAccountMapper;
 import dev.anton.model.JarAccount;
 import dev.anton.model.NewJarAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JarAccountService {
+
     private final JarAccountDao jarAccountDao;
 
     @Autowired
@@ -22,32 +25,30 @@ public class JarAccountService {
 
     public JarAccount createJarAccount(final NewJarAccount newJarAccount) {
         try {
-            JarAccountEntity jarAccountEntity = mapJarAccountEntity(newJarAccount);
-            jarAccountDao.save(jarAccountEntity);
-            return mapJarAccount(jarAccountEntity);
+            JarAccountEntity jarAccountEntity = JarAccountMapper.mapJarAccountEntity(newJarAccount);
+            jarAccountDao.save(JarAccountMapper.mapJarAccountEntity(newJarAccount));
+            return JarAccountMapper.mapJarAccount(jarAccountEntity);
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
             throw new BadRequestException("JAR_ACCOUNT_ALREADY_EXISTS", "JarAccount already exists for this account");
         }
-
     }
 
-    private JarAccount mapJarAccount(JarAccountEntity jarAccountEntity) {
-        return new JarAccount()
-                .jarAccountId(jarAccountEntity.getJarAccountId())
-                .linkedAccount(jarAccountEntity.getLinkedAccountIban())
-                .currency(JarAccount.CurrencyEnum.valueOf(jarAccountEntity.getCurrency()))
-                .customerId(jarAccountEntity.getCustomerId())
-                .roundUp(JarAccount.RoundUpEnum.valueOf(jarAccountEntity.getRoundUp()))
-                .status(JarAccount.StatusEnum.valueOf(jarAccountEntity.getStatus()));
+    public List<JarAccount> getJarAccounts(String customerId, String linkedAccount) {
+        if (customerId == null && linkedAccount == null) {
+            throw new BadRequestException("MISSING_QUERY_PARAMETERS", "provide either customerId or linkedAccount");
+        }
+        return getJarAccountEntities(customerId, linkedAccount).stream().map(JarAccountMapper::mapJarAccount).collect(Collectors.toList());
     }
-    private JarAccountEntity mapJarAccountEntity(NewJarAccount newJarAccount) {
-        final JarAccountEntity jarAccountEntity = new JarAccountEntity();
-        jarAccountEntity.setJarAccountId(String.valueOf(UUID.randomUUID()));
-        jarAccountEntity.setLinkedAccountIban(newJarAccount.getLinkedAccount());
-        jarAccountEntity.setCurrency(newJarAccount.getCurrency().name());
-        jarAccountEntity.setCustomerId(newJarAccount.getCustomerId());
-        jarAccountEntity.setRoundUp(newJarAccount.getRoundUp().name());
-        jarAccountEntity.setStatus(JarAccount.StatusEnum.ENABLED.name());
-        return jarAccountEntity;
+
+    private List<JarAccountEntity> getJarAccountEntities(String customerId, String linkedAccount) {
+        if (null != customerId && null != linkedAccount) {
+            return jarAccountDao.findByCustomerIdAndLinkedAccountIban(customerId, linkedAccount);
+        }
+        if (null != customerId) {
+            return jarAccountDao.findByCustomerId(customerId);
+        }
+        return jarAccountDao.findByLinkedAccountIban(linkedAccount);
     }
+
+
 }
