@@ -34,7 +34,7 @@ public final class JarAccountMapper {
         jarAccountEntity.setRoundUp(newJarAccount.getRoundUp().name());
         jarAccountEntity.setStatus(JarAccount.StatusEnum.ENABLED.name());
         JarAccountBalanceEntity jarAccountBalanceEntity = new JarAccountBalanceEntity();
-        jarAccountBalanceEntity.setId(String.valueOf(UUID.randomUUID()));
+        jarAccountBalanceEntity.setId(jarAccountEntity.getJarAccountId());
         jarAccountBalanceEntity.setBalance(BigDecimal.ZERO);
         jarAccountBalanceEntity.setJarAccount(jarAccountEntity);
         jarAccountEntity.addJarAccountBalance(jarAccountBalanceEntity);

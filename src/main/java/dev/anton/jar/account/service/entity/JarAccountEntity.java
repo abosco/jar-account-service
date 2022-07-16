@@ -1,6 +1,8 @@
 package dev.anton.jar.account.service.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "JAR_ACCOUNT",
@@ -29,6 +31,10 @@ public class JarAccountEntity {
     @OneToOne(mappedBy = "jarAccount", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private JarAccountBalanceEntity jarAccountBalance;
+
+    @OneToMany(mappedBy = "jarAccount", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private final List<JarAccountTransactionEntity> jarAccountTransactions = new ArrayList<>();
 
     public String getJarAccountId() {
         return jarAccountId;
@@ -84,7 +90,14 @@ public class JarAccountEntity {
 
     public void addJarAccountBalance(JarAccountBalanceEntity jarAccountBalance) {
         this.jarAccountBalance = jarAccountBalance;
-
     }
 
+    public List<JarAccountTransactionEntity> getJarAccountTransactions() {
+        return jarAccountTransactions;
+    }
+
+    public void addJarAccountTransaction(JarAccountTransactionEntity jarAccountTransactionEntity) {
+        jarAccountTransactionEntity.setJarAccount(this);
+        this.jarAccountTransactions.add(jarAccountTransactionEntity);
+    }
 }

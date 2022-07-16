@@ -63,6 +63,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /jarAccountSavings:
+    post:
+      tags:
+        - JarAccount
+      summary: create a new jar account
+      operationId: saveIntoJarAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JarAccountSaving'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JarAccountTransaction'
+        400:
+          description: Invalid status value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     NewJarAccount:
@@ -109,6 +134,36 @@ components:
           enum:
             - ENABLED
             - DISABLED
+    JarAccountSaving:
+      type: object
+      properties:
+        jarAccountId:
+          type: string
+        originalTransactionAmount:
+          type: number
+        bookingDate:
+          type: string
+          format: date
+        valueDate:
+          type: string
+          format: date
+    JarAccountTransaction:
+      type: object
+      properties:
+        jarAccountTransactionId:
+          type: string
+        savingAmount:
+          type: number
+        originalTransactionAmount:
+          type: number
+        bookingDate:
+          type: string
+          format: date
+        valueDate:
+          type: string
+          format: date
+        narration:
+          type: string
     Error:
       type: object
       properties:

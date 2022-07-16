@@ -26,7 +26,7 @@ public class JarAccountService {
     public JarAccount createJarAccount(final NewJarAccount newJarAccount) {
         try {
             JarAccountEntity jarAccountEntity = JarAccountMapper.mapJarAccountEntity(newJarAccount);
-            jarAccountDao.save(JarAccountMapper.mapJarAccountEntity(newJarAccount));
+            jarAccountDao.save(jarAccountEntity);
             return JarAccountMapper.mapJarAccount(jarAccountEntity);
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
             throw new BadRequestException("JAR_ACCOUNT_ALREADY_EXISTS", "JarAccount already exists for this account");
