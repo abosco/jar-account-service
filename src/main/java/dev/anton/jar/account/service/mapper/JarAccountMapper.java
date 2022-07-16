@@ -1,9 +1,11 @@
 package dev.anton.jar.account.service.mapper;
 
+import dev.anton.jar.account.service.entity.JarAccountBalanceEntity;
 import dev.anton.jar.account.service.entity.JarAccountEntity;
 import dev.anton.model.JarAccount;
 import dev.anton.model.NewJarAccount;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public final class JarAccountMapper {
@@ -19,6 +21,7 @@ public final class JarAccountMapper {
                 .currency(JarAccount.CurrencyEnum.valueOf(jarAccountEntity.getCurrency()))
                 .customerId(jarAccountEntity.getCustomerId())
                 .roundUp(JarAccount.RoundUpEnum.valueOf(jarAccountEntity.getRoundUp()))
+                .balance(jarAccountEntity.getJarAccountBalance().getBalance())
                 .status(JarAccount.StatusEnum.valueOf(jarAccountEntity.getStatus()));
     }
 
@@ -30,7 +33,11 @@ public final class JarAccountMapper {
         jarAccountEntity.setCustomerId(newJarAccount.getCustomerId());
         jarAccountEntity.setRoundUp(newJarAccount.getRoundUp().name());
         jarAccountEntity.setStatus(JarAccount.StatusEnum.ENABLED.name());
+        JarAccountBalanceEntity jarAccountBalanceEntity = new JarAccountBalanceEntity();
+        jarAccountBalanceEntity.setId(String.valueOf(UUID.randomUUID()));
+        jarAccountBalanceEntity.setBalance(BigDecimal.ZERO);
+        jarAccountBalanceEntity.setJarAccount(jarAccountEntity);
+        jarAccountEntity.addJarAccountBalance(jarAccountBalanceEntity);
         return jarAccountEntity;
     }
-
 }

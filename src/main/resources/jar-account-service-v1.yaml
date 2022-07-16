@@ -102,6 +102,8 @@ components:
             - NEAREST_EUR
             - NEAREST_FIVE_EUR
             - NEAREST_TEN_EUR
+        balance:
+          type: number
         status:
           type: string
           enum:
