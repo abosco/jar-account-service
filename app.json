@@ -1,0 +1,8 @@
+{
+  "name": "jar-account-service-v1",
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ]
+}
