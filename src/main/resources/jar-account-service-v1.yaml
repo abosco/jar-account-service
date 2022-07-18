@@ -61,7 +61,7 @@ paths:
     get:
       tags:
         - JarAccount
-      summary: retrives all jar accounts linked to a customerId or account
+      summary: retrieves all jar accounts linked to a customerId or account
       operationId: getJarAccounts
       parameters:
         - in: query
