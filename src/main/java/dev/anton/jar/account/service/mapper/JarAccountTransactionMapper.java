@@ -4,7 +4,7 @@ import dev.anton.jar.account.service.entity.JarAccountEntity;
 import dev.anton.jar.account.service.entity.JarAccountTransactionEntity;
 import dev.anton.model.JarAccount;
 import dev.anton.model.JarAccountSaving;
-import dev.anton.model.JarAccountTransaction;
+import dev.anton.model.NewJarAccountSaving;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -22,29 +22,29 @@ public final class JarAccountTransactionMapper {
             JarAccount.RoundUpEnum.TEN_EUR.name(), BigDecimal.TEN
     );
 
-    public static JarAccountTransactionEntity mapJarAccountTransactionEntity(JarAccountSaving jarAccountSaving, JarAccountEntity jarAccountEntity) {
-        BigDecimal savingAmount = determineRoundUpAmount(jarAccountSaving.getOriginalTransactionAmount(), jarAccountEntity.getRoundUp());
+    public static JarAccountTransactionEntity mapJarAccountTransactionEntity(NewJarAccountSaving newJarAccountSaving, JarAccountEntity jarAccountEntity) {
+        BigDecimal savingAmount = determineRoundUpAmount(newJarAccountSaving.getOriginalTransactionAmount(), jarAccountEntity.getRoundUp());
         JarAccountTransactionEntity jarAccountTransactionEntity = new JarAccountTransactionEntity();
         jarAccountTransactionEntity.setJarAccount(jarAccountEntity);
-        jarAccountTransactionEntity.setOriginalTransactionAmount(jarAccountSaving.getOriginalTransactionAmount());
+        jarAccountTransactionEntity.setOriginalTransactionAmount(newJarAccountSaving.getOriginalTransactionAmount());
         jarAccountTransactionEntity.setId(UUID.randomUUID().toString());
         jarAccountTransactionEntity.setAmount(savingAmount);
-        jarAccountTransactionEntity.setBookingDate(jarAccountSaving.getBookingDate());
-        jarAccountTransactionEntity.setValueDate(jarAccountSaving.getValueDate());
+        jarAccountTransactionEntity.setBookingDate(newJarAccountSaving.getBookingDate());
+        jarAccountTransactionEntity.setValueDate(newJarAccountSaving.getValueDate());
         jarAccountTransactionEntity.setRoundOffRule(jarAccountEntity.getRoundUp());
-        jarAccountTransactionEntity.setNarration("RoundUp Saving for Transaction Amount " + jarAccountSaving.getOriginalTransactionAmount() + " on " + jarAccountSaving.getValueDate());
+        jarAccountTransactionEntity.setNarration("RoundUp Saving for Transaction Amount " + newJarAccountSaving.getOriginalTransactionAmount() + " on " + newJarAccountSaving.getValueDate());
         return jarAccountTransactionEntity;
     }
 
-    public static JarAccountTransaction mapJarAccountTransaction(JarAccountTransactionEntity jarAccountTransactionEntity) {
-        JarAccountTransaction jarAccountTransaction = new JarAccountTransaction();
-        jarAccountTransaction.setJarAccountTransactionId(jarAccountTransactionEntity.getId());
-        jarAccountTransaction.setSavingAmount(jarAccountTransactionEntity.getAmount());
-        jarAccountTransaction.setBookingDate(jarAccountTransactionEntity.getBookingDate());
-        jarAccountTransaction.setValueDate(jarAccountTransactionEntity.getValueDate());
-        jarAccountTransaction.setOriginalTransactionAmount(jarAccountTransactionEntity.getOriginalTransactionAmount());
-        jarAccountTransaction.setNarration(jarAccountTransactionEntity.getNarration());
-        return jarAccountTransaction;
+    public static JarAccountSaving mapJarAccountSaving(JarAccountTransactionEntity jarAccountTransactionEntity) {
+        JarAccountSaving jarAccountSaving = new JarAccountSaving();
+        jarAccountSaving.setJarAccountTransactionId(jarAccountTransactionEntity.getId());
+        jarAccountSaving.setSavingAmount(jarAccountTransactionEntity.getAmount());
+        jarAccountSaving.setBookingDate(jarAccountTransactionEntity.getBookingDate());
+        jarAccountSaving.setValueDate(jarAccountTransactionEntity.getValueDate());
+        jarAccountSaving.setOriginalTransactionAmount(jarAccountTransactionEntity.getOriginalTransactionAmount());
+        jarAccountSaving.setNarration(jarAccountTransactionEntity.getNarration());
+        return jarAccountSaving;
     }
 
     private static BigDecimal determineRoundUpAmount(BigDecimal originalTransactionAmount, String roundUpRule) {

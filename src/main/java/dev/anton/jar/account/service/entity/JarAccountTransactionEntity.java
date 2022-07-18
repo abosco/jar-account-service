@@ -30,7 +30,7 @@ public class JarAccountTransactionEntity {
     @Column(name = "NARRATION", nullable = false)
     private String narration;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "JAR_ACCOUNT_ID")
     private JarAccountEntity jarAccount;
 
@@ -97,4 +97,5 @@ public class JarAccountTransactionEntity {
     public void setJarAccount(JarAccountEntity jarAccount) {
         this.jarAccount = jarAccount;
     }
+
 }

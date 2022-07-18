@@ -63,17 +63,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /jarAccountSavings:
+  /jarAccounts/{jarAccountId}/jarAccountSavings:
     post:
       tags:
         - JarAccount
       summary: create a new jar account
       operationId: saveIntoJarAccount
+      parameters:
+        - in: path
+          name: jarAccountId
+          description: unique id of the jar account
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JarAccountSaving'
+              $ref: '#/components/schemas/NewJarAccountSaving'
         required: true
       responses:
         200:
@@ -81,7 +88,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JarAccountTransaction'
+                $ref: '#/components/schemas/JarAccountSaving'
+        400:
+          description: Invalid status value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - JarAccount
+      summary: retrieves all jar account savings for the given jarAccountId
+      operationId: getJarAccountSavings
+      parameters:
+        - in: path
+          name: jarAccountId
+          description: unique id of the jar account
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JarAccountSaving'
         400:
           description: Invalid status value
           content:
@@ -134,11 +168,9 @@ components:
           enum:
             - ENABLED
             - DISABLED
-    JarAccountSaving:
+    NewJarAccountSaving:
       type: object
       properties:
-        jarAccountId:
-          type: string
         originalTransactionAmount:
           type: number
         bookingDate:
@@ -147,7 +179,7 @@ components:
         valueDate:
           type: string
           format: date
-    JarAccountTransaction:
+    JarAccountSaving:
       type: object
       properties:
         jarAccountTransactionId:
