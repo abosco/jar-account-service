@@ -28,6 +28,10 @@ public class JarAccountEntity {
     @Column(name = "ROUND_UP", nullable = false)
     private String roundUp;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ACCOUNT_ID")
+    private BankAccountEntity bankAccount;
+
     @OneToOne(mappedBy = "jarAccount", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private JarAccountBalanceEntity jarAccountBalance;
@@ -82,6 +86,14 @@ public class JarAccountEntity {
 
     public void setRoundUp(String roundUp) {
         this.roundUp = roundUp;
+    }
+
+    public BankAccountEntity getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccountEntity bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public JarAccountBalanceEntity getJarAccountBalance() {

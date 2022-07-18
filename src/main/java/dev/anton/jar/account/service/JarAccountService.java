@@ -1,7 +1,9 @@
 package dev.anton.jar.account.service;
 
 import dev.anton.jar.account.exception.BadRequestException;
+import dev.anton.jar.account.service.dao.BankAccountDao;
 import dev.anton.jar.account.service.dao.JarAccountDao;
+import dev.anton.jar.account.service.entity.BankAccountEntity;
 import dev.anton.jar.account.service.entity.JarAccountEntity;
 import dev.anton.jar.account.service.mapper.JarAccountMapper;
 import dev.anton.model.JarAccount;
@@ -18,14 +20,23 @@ public class JarAccountService {
 
     private final JarAccountDao jarAccountDao;
 
+    private final BankAccountDao bankAccountDao;
+
     @Autowired
-    public JarAccountService(final JarAccountDao jarAccountDao) {
+    public JarAccountService(final JarAccountDao jarAccountDao, final BankAccountDao bankAccountDao) {
         this.jarAccountDao = jarAccountDao;
+        this.bankAccountDao = bankAccountDao;
     }
 
     public JarAccount createJarAccount(final NewJarAccount newJarAccount) {
         try {
             JarAccountEntity jarAccountEntity = JarAccountMapper.mapJarAccountEntity(newJarAccount);
+            List<BankAccountEntity> bankAccounts = bankAccountDao.findByCustomerIdAndIbanAndCurrency(newJarAccount.getCustomerId(),
+                    newJarAccount.getLinkedAccount(), newJarAccount.getCurrency().name());
+            if (bankAccounts.isEmpty() || !bankAccounts.get(0).getStatus().equals("ACTIVE")) {
+                throw new BadRequestException("LINKED_ACCOUNT_NOT_FOUND_OR_ACTIVE", "Account not found or active");
+            }
+            jarAccountEntity.setBankAccount(bankAccounts.get(0));
             jarAccountDao.save(jarAccountEntity);
             return JarAccountMapper.mapJarAccount(jarAccountEntity);
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
