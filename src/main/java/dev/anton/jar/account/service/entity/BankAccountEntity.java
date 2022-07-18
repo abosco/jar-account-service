@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "ACCOUNT",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"CUSTOMER_ID", "IBAN", "CURRENCY"})})
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"IBAN", "CURRENCY"})})
 public class BankAccountEntity {
 
     @Id

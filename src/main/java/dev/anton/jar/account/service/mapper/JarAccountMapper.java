@@ -19,7 +19,6 @@ public final class JarAccountMapper {
                 .jarAccountId(jarAccountEntity.getJarAccountId())
                 .linkedAccount(jarAccountEntity.getLinkedAccountIban())
                 .currency(JarAccount.CurrencyEnum.valueOf(jarAccountEntity.getCurrency()))
-                .customerId(jarAccountEntity.getCustomerId())
                 .roundUp(JarAccount.RoundUpEnum.valueOf(jarAccountEntity.getRoundUp()))
                 .balance(jarAccountEntity.getJarAccountBalance().getBalance())
                 .status(JarAccount.StatusEnum.valueOf(jarAccountEntity.getStatus()));
@@ -30,7 +29,6 @@ public final class JarAccountMapper {
         jarAccountEntity.setJarAccountId(String.valueOf(UUID.randomUUID()));
         jarAccountEntity.setLinkedAccountIban(newJarAccount.getLinkedAccount());
         jarAccountEntity.setCurrency(newJarAccount.getCurrency().name());
-        jarAccountEntity.setCustomerId(newJarAccount.getCustomerId());
         jarAccountEntity.setRoundUp(newJarAccount.getRoundUp().name());
         jarAccountEntity.setStatus(JarAccount.StatusEnum.ENABLED.name());
         JarAccountBalanceEntity jarAccountBalanceEntity = new JarAccountBalanceEntity();

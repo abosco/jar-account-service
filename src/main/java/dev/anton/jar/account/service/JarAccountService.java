@@ -31,8 +31,7 @@ public class JarAccountService {
     public JarAccount createJarAccount(final NewJarAccount newJarAccount) {
         try {
             JarAccountEntity jarAccountEntity = JarAccountMapper.mapJarAccountEntity(newJarAccount);
-            List<BankAccountEntity> bankAccounts = bankAccountDao.findByCustomerIdAndIbanAndCurrency(newJarAccount.getCustomerId(),
-                    newJarAccount.getLinkedAccount(), newJarAccount.getCurrency().name());
+            List<BankAccountEntity> bankAccounts = bankAccountDao.findByIbanAndCurrency(newJarAccount.getLinkedAccount(), newJarAccount.getCurrency().name());
             if (bankAccounts.isEmpty() || !bankAccounts.get(0).getStatus().equals("ACTIVE")) {
                 throw new BadRequestException("LINKED_ACCOUNT_NOT_FOUND_OR_ACTIVE", "Account not found or active");
             }

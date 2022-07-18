@@ -12,6 +12,6 @@ public interface BankAccountDao extends CrudRepository<BankAccountEntity, String
 
     List<BankAccountEntity> findByCustomerId(String customerId);
 
-    @Query("select acc from BankAccountEntity acc where acc.customerId = ?1 and acc.bankAccountIban = ?2 and acc.currency = ?3")
-    List<BankAccountEntity> findByCustomerIdAndIbanAndCurrency(String customerId, String iban, String currency);
+    @Query("select acc from BankAccountEntity acc where acc.bankAccountIban = ?1 and acc.currency = ?2")
+    List<BankAccountEntity> findByIbanAndCurrency(String iban, String currency);
 }

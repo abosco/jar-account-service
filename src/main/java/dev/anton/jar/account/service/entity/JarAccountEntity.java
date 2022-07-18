@@ -6,15 +6,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "JAR_ACCOUNT",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"CUSTOMER_ID", "LINKED_ACCOUNT", "CURRENCY"})})
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"LINKED_ACCOUNT", "CURRENCY"})})
 public class JarAccountEntity {
 
     @Id
     @Column(name = "ID", nullable = false)
     private String jarAccountId;
-
-    @Column(name = "CUSTOMER_ID", nullable = false)
-    private String customerId;
 
     @Column(name = "LINKED_ACCOUNT", nullable = false)
     private String linkedAccountIban;
@@ -46,14 +43,6 @@ public class JarAccountEntity {
 
     public void setJarAccountId(String jarAccountId) {
         this.jarAccountId = jarAccountId;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
     }
 
     public String getLinkedAccountIban() {
