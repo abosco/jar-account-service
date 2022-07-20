@@ -7,6 +7,7 @@ import dev.anton.jar.account.service.entity.BankAccountEntity;
 import dev.anton.jar.account.service.entity.JarAccountEntity;
 import dev.anton.jar.account.service.mapper.JarAccountMapper;
 import dev.anton.model.JarAccount;
+import dev.anton.model.JarAccounts;
 import dev.anton.model.NewJarAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,11 +44,13 @@ public class JarAccountService {
         }
     }
 
-    public List<JarAccount> getJarAccounts(String customerId, String linkedAccount) {
+    public JarAccounts getJarAccounts(String customerId, String linkedAccount) {
         if (customerId == null && linkedAccount == null) {
             throw new BadRequestException("MISSING_QUERY_PARAMETERS", "provide either customerId or linkedAccount");
         }
-        return getJarAccountEntities(customerId, linkedAccount).stream().map(JarAccountMapper::mapJarAccount).collect(Collectors.toList());
+        return new JarAccounts().jarAccounts(getJarAccountEntities(customerId, linkedAccount)
+                .stream().map(JarAccountMapper::mapJarAccount)
+                .collect(Collectors.toList()));
     }
 
     private List<JarAccountEntity> getJarAccountEntities(String customerId, String linkedAccount) {

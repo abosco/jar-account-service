@@ -7,11 +7,11 @@ import dev.anton.jar.account.service.entity.JarAccountEntity;
 import dev.anton.jar.account.service.entity.JarAccountTransactionEntity;
 import dev.anton.jar.account.service.mapper.JarAccountTransactionMapper;
 import dev.anton.model.JarAccountSaving;
+import dev.anton.model.JarAccountSavings;
 import dev.anton.model.NewJarAccountSaving;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +38,10 @@ public class JarAccountSavingService {
         return JarAccountTransactionMapper.mapJarAccountSaving(jarAccountTransactionEntity);
     }
 
-    public List<JarAccountSaving> getJarAccountSavings(String jarAccountId) {
-        return jarAccountTransactionDao.findByJarAccountId(jarAccountId).stream().map(JarAccountTransactionMapper::mapJarAccountSaving).collect(Collectors.toList());
+    public JarAccountSavings getJarAccountSavings(String jarAccountId) {
+        return new JarAccountSavings().jarAccountSavings(
+                jarAccountTransactionDao.findByJarAccountId(jarAccountId).stream()
+                        .map(JarAccountTransactionMapper::mapJarAccountSaving)
+                        .collect(Collectors.toList()));
     }
 }

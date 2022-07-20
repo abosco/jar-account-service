@@ -3,10 +3,7 @@ package dev.anton.jar.account.controller;
 import dev.anton.api.JarAccountsApi;
 import dev.anton.jar.account.service.JarAccountSavingService;
 import dev.anton.jar.account.service.JarAccountService;
-import dev.anton.model.JarAccount;
-import dev.anton.model.JarAccountSaving;
-import dev.anton.model.NewJarAccount;
-import dev.anton.model.NewJarAccountSaving;
+import dev.anton.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +25,7 @@ public class JarAccountsApiController implements JarAccountsApi {
     }
 
     @Override
-    public ResponseEntity<List<JarAccount>> getJarAccounts(String customerId, String linkedAccount) {
+    public ResponseEntity<JarAccounts> getJarAccounts(String customerId, String linkedAccount) {
         return ResponseEntity.ok().body(jarAccountService.getJarAccounts(customerId, linkedAccount));
     }
 
@@ -38,7 +35,7 @@ public class JarAccountsApiController implements JarAccountsApi {
     }
 
     @Override
-    public ResponseEntity<List<JarAccountSaving>> getJarAccountSavings(String jarAccountId) {
+    public ResponseEntity<JarAccountSavings> getJarAccountSavings(String jarAccountId) {
         return ResponseEntity.ok().body(jarAccountSavingService.getJarAccountSavings(jarAccountId));
     }
 }
