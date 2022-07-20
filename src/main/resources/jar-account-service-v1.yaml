@@ -24,9 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Account'
+                $ref: '#/components/schemas/Accounts'
         400:
           description: Invalid status value
           content:
@@ -168,6 +166,13 @@ components:
             - NEAREST_FIVE_EUR
             - NEAREST_TEN_EUR
           default: NEAREST_EUR
+    Accounts:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
     Account:
       type: object
       properties:
